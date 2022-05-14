@@ -54,7 +54,7 @@ func (b *Bot) handleCommand(message *tgbotapi.Message) error {
 	case commandTop:
 		return b.handleTopCommand(message, 3)
 	case commandMyPos:
-		return nil
+		return b.handlePosCommand(message)
 	case commandGame:
 		err := b.getQuestionsAndAnswers(uint64(message.Chat.ID), 10)
 		if err != nil {

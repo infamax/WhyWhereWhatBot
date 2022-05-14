@@ -1,7 +1,9 @@
 package telegram
 
 import (
+	"context"
 	tgbotapi "github.com/go-telegram-bot-api/telegram-bot-api/v5"
+	pb "github.com/infamax/WhyWhereWhatBot/api"
 	"strconv"
 )
 
@@ -38,12 +40,15 @@ func (b *Bot) checkAnswer(message *tgbotapi.Message, num int) bool {
 	if b.cacheQuestions.IsEndUserQuestions(uint64(message.Chat.ID)) {
 		text := "Конец игры. Твой результат " +
 			strconv.Itoa(b.cacheQuestions.GetCorrectAnsUser(uint64(message.Chat.ID))) + " баллов"
-		//count := b.cacheQuestions.GetCorrectAnsUser(uint64(message.Chat.ID))
+		count := b.cacheQuestions.GetCorrectAnsUser(uint64(message.Chat.ID))
 		msg := tgbotapi.NewMessage(message.Chat.ID, text)
 		b.bot.Send(msg)
 		b.cacheGame.SetUserStopGame(uint64(message.Chat.ID))
 		b.cacheQuestions.DeleteUser(uint64(message.Chat.ID))
-		// TODO вот тут обновляем результат в бд
+		b.client.UpdateUserScore(context.TODO(), &pb.UserTelegram{
+			TelegramId: uint64(message.Chat.ID),
+			NewScore:   uint64(count),
+		})
 	} else {
 		b.playGame(message, b.cacheQuestions.GetCountAskedQuestions(uint64(message.Chat.ID)))
 	}

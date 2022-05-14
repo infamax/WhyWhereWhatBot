@@ -277,6 +277,74 @@ func local_request_WhyWhereWhatServer_Exist_0(ctx context.Context, marshaler run
 
 }
 
+func request_WhyWhereWhatServer_UpdateUserScore_0(ctx context.Context, marshaler runtime.Marshaler, client WhyWhereWhatServerClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq UserTelegram
+	var metadata runtime.ServerMetadata
+
+	newReader, berr := utilities.IOReaderFactory(req.Body)
+	if berr != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", berr)
+	}
+	if err := marshaler.NewDecoder(newReader()).Decode(&protoReq); err != nil && err != io.EOF {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+	}
+
+	msg, err := client.UpdateUserScore(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
+	return msg, metadata, err
+
+}
+
+func local_request_WhyWhereWhatServer_UpdateUserScore_0(ctx context.Context, marshaler runtime.Marshaler, server WhyWhereWhatServerServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq UserTelegram
+	var metadata runtime.ServerMetadata
+
+	newReader, berr := utilities.IOReaderFactory(req.Body)
+	if berr != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", berr)
+	}
+	if err := marshaler.NewDecoder(newReader()).Decode(&protoReq); err != nil && err != io.EOF {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+	}
+
+	msg, err := server.UpdateUserScore(ctx, &protoReq)
+	return msg, metadata, err
+
+}
+
+func request_WhyWhereWhatServer_GetPositionUser_0(ctx context.Context, marshaler runtime.Marshaler, client WhyWhereWhatServerClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq TelegramId
+	var metadata runtime.ServerMetadata
+
+	newReader, berr := utilities.IOReaderFactory(req.Body)
+	if berr != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", berr)
+	}
+	if err := marshaler.NewDecoder(newReader()).Decode(&protoReq); err != nil && err != io.EOF {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+	}
+
+	msg, err := client.GetPositionUser(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
+	return msg, metadata, err
+
+}
+
+func local_request_WhyWhereWhatServer_GetPositionUser_0(ctx context.Context, marshaler runtime.Marshaler, server WhyWhereWhatServerServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq TelegramId
+	var metadata runtime.ServerMetadata
+
+	newReader, berr := utilities.IOReaderFactory(req.Body)
+	if berr != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", berr)
+	}
+	if err := marshaler.NewDecoder(newReader()).Decode(&protoReq); err != nil && err != io.EOF {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+	}
+
+	msg, err := server.GetPositionUser(ctx, &protoReq)
+	return msg, metadata, err
+
+}
+
 // RegisterWhyWhereWhatServerHandlerServer registers the http handlers for service WhyWhereWhatServer to "mux".
 // UnaryRPC     :call WhyWhereWhatServerServer directly.
 // StreamingRPC :currently unsupported pending https://github.com/grpc/grpc-go/issues/906.
@@ -290,7 +358,7 @@ func RegisterWhyWhereWhatServerHandlerServer(ctx context.Context, mux *runtime.S
 		ctx = grpc.NewContextWithServerTransportStream(ctx, &stream)
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
-		ctx, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/api.WhyWhereWhatServer/Update", runtime.WithHTTPPathPattern("/Update"))
+		ctx, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/api.WhyWhereWhatServer/Update", runtime.WithHTTPPathPattern("/UpdateUser"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -434,7 +502,7 @@ func RegisterWhyWhereWhatServerHandlerServer(ctx context.Context, mux *runtime.S
 		ctx = grpc.NewContextWithServerTransportStream(ctx, &stream)
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
-		ctx, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/api.WhyWhereWhatServer/Exist", runtime.WithHTTPPathPattern("/Exist"))
+		ctx, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/api.WhyWhereWhatServer/Exist", runtime.WithHTTPPathPattern("/ExistUser"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -448,6 +516,54 @@ func RegisterWhyWhereWhatServerHandlerServer(ctx context.Context, mux *runtime.S
 		}
 
 		forward_WhyWhereWhatServer_Exist_0(ctx, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+
+	})
+
+	mux.Handle("POST", pattern_WhyWhereWhatServer_UpdateUserScore_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+		ctx, cancel := context.WithCancel(req.Context())
+		defer cancel()
+		var stream runtime.ServerTransportStream
+		ctx = grpc.NewContextWithServerTransportStream(ctx, &stream)
+		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
+		var err error
+		ctx, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/api.WhyWhereWhatServer/UpdateUserScore", runtime.WithHTTPPathPattern("/UpdateUserScore"))
+		if err != nil {
+			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
+			return
+		}
+		resp, md, err := local_request_WhyWhereWhatServer_UpdateUserScore_0(ctx, inboundMarshaler, server, req, pathParams)
+		md.HeaderMD, md.TrailerMD = metadata.Join(md.HeaderMD, stream.Header()), metadata.Join(md.TrailerMD, stream.Trailer())
+		ctx = runtime.NewServerMetadataContext(ctx, md)
+		if err != nil {
+			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
+			return
+		}
+
+		forward_WhyWhereWhatServer_UpdateUserScore_0(ctx, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+
+	})
+
+	mux.Handle("POST", pattern_WhyWhereWhatServer_GetPositionUser_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+		ctx, cancel := context.WithCancel(req.Context())
+		defer cancel()
+		var stream runtime.ServerTransportStream
+		ctx = grpc.NewContextWithServerTransportStream(ctx, &stream)
+		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
+		var err error
+		ctx, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/api.WhyWhereWhatServer/GetPositionUser", runtime.WithHTTPPathPattern("/GetPositionUser"))
+		if err != nil {
+			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
+			return
+		}
+		resp, md, err := local_request_WhyWhereWhatServer_GetPositionUser_0(ctx, inboundMarshaler, server, req, pathParams)
+		md.HeaderMD, md.TrailerMD = metadata.Join(md.HeaderMD, stream.Header()), metadata.Join(md.TrailerMD, stream.Trailer())
+		ctx = runtime.NewServerMetadataContext(ctx, md)
+		if err != nil {
+			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
+			return
+		}
+
+		forward_WhyWhereWhatServer_GetPositionUser_0(ctx, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 
 	})
 
@@ -497,7 +613,7 @@ func RegisterWhyWhereWhatServerHandlerClient(ctx context.Context, mux *runtime.S
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
-		ctx, err = runtime.AnnotateContext(ctx, mux, req, "/api.WhyWhereWhatServer/Update", runtime.WithHTTPPathPattern("/Update"))
+		ctx, err = runtime.AnnotateContext(ctx, mux, req, "/api.WhyWhereWhatServer/Update", runtime.WithHTTPPathPattern("/UpdateUser"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -623,7 +739,7 @@ func RegisterWhyWhereWhatServerHandlerClient(ctx context.Context, mux *runtime.S
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
-		ctx, err = runtime.AnnotateContext(ctx, mux, req, "/api.WhyWhereWhatServer/Exist", runtime.WithHTTPPathPattern("/Exist"))
+		ctx, err = runtime.AnnotateContext(ctx, mux, req, "/api.WhyWhereWhatServer/Exist", runtime.WithHTTPPathPattern("/ExistUser"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -639,11 +755,53 @@ func RegisterWhyWhereWhatServerHandlerClient(ctx context.Context, mux *runtime.S
 
 	})
 
+	mux.Handle("POST", pattern_WhyWhereWhatServer_UpdateUserScore_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+		ctx, cancel := context.WithCancel(req.Context())
+		defer cancel()
+		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
+		var err error
+		ctx, err = runtime.AnnotateContext(ctx, mux, req, "/api.WhyWhereWhatServer/UpdateUserScore", runtime.WithHTTPPathPattern("/UpdateUserScore"))
+		if err != nil {
+			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
+			return
+		}
+		resp, md, err := request_WhyWhereWhatServer_UpdateUserScore_0(ctx, inboundMarshaler, client, req, pathParams)
+		ctx = runtime.NewServerMetadataContext(ctx, md)
+		if err != nil {
+			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
+			return
+		}
+
+		forward_WhyWhereWhatServer_UpdateUserScore_0(ctx, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+
+	})
+
+	mux.Handle("POST", pattern_WhyWhereWhatServer_GetPositionUser_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+		ctx, cancel := context.WithCancel(req.Context())
+		defer cancel()
+		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
+		var err error
+		ctx, err = runtime.AnnotateContext(ctx, mux, req, "/api.WhyWhereWhatServer/GetPositionUser", runtime.WithHTTPPathPattern("/GetPositionUser"))
+		if err != nil {
+			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
+			return
+		}
+		resp, md, err := request_WhyWhereWhatServer_GetPositionUser_0(ctx, inboundMarshaler, client, req, pathParams)
+		ctx = runtime.NewServerMetadataContext(ctx, md)
+		if err != nil {
+			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
+			return
+		}
+
+		forward_WhyWhereWhatServer_GetPositionUser_0(ctx, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+
+	})
+
 	return nil
 }
 
 var (
-	pattern_WhyWhereWhatServer_Update_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0}, []string{"Update"}, ""))
+	pattern_WhyWhereWhatServer_Update_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0}, []string{"UpdateUser"}, ""))
 
 	pattern_WhyWhereWhatServer_Add_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0}, []string{"Add"}, ""))
 
@@ -655,7 +813,11 @@ var (
 
 	pattern_WhyWhereWhatServer_GetQuestions_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0}, []string{"GetQuestions"}, ""))
 
-	pattern_WhyWhereWhatServer_Exist_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0}, []string{"Exist"}, ""))
+	pattern_WhyWhereWhatServer_Exist_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0}, []string{"ExistUser"}, ""))
+
+	pattern_WhyWhereWhatServer_UpdateUserScore_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0}, []string{"UpdateUserScore"}, ""))
+
+	pattern_WhyWhereWhatServer_GetPositionUser_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0}, []string{"GetPositionUser"}, ""))
 )
 
 var (
@@ -672,4 +834,8 @@ var (
 	forward_WhyWhereWhatServer_GetQuestions_0 = runtime.ForwardResponseMessage
 
 	forward_WhyWhereWhatServer_Exist_0 = runtime.ForwardResponseMessage
+
+	forward_WhyWhereWhatServer_UpdateUserScore_0 = runtime.ForwardResponseMessage
+
+	forward_WhyWhereWhatServer_GetPositionUser_0 = runtime.ForwardResponseMessage
 )

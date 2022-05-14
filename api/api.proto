@@ -48,8 +48,15 @@ service WhyWhereWhatServer {
   rpc UpdateUserScore(UserTelegram) returns (Empty) {
     option (google.api.http) = {
       post: "/UpdateUserScore"
+      body: "*"
     };
-  }
+  } // Обновление данных о пользователе по его telegram_id
+  rpc GetPositionUser(TelegramId) returns(Position) {
+    option (google.api.http) = {
+      post: "/GetPositionUser"
+      body: "*"
+    };
+  } // Получение позиции пользователя по его telegram_id
 }
 
 message User {
@@ -98,5 +105,9 @@ message ExistResponse {
 message UserTelegram {
   uint64 telegram_id = 1;
   uint64 new_score = 2;
+}
+
+message Position {
+  uint64 pos = 1;
 }
 

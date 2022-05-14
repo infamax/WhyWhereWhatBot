@@ -8,13 +8,13 @@ import (
 )
 
 func (b *Bot) initUser(chatId int64, username string) error {
-	ok, _ := b.client.Exist(context.TODO(), &pb.TelegramId{
+	_, err := b.client.Exist(context.TODO(), &pb.TelegramId{
 		Id: uint64(chatId),
 	})
-	if ok.Ans {
+	if err == nil {
 		return status.Errorf(codes.AlreadyExists, "this user already exist in db")
 	}
-	_, err := b.client.Add(context.TODO(), &pb.User{
+	_, err = b.client.Add(context.TODO(), &pb.User{
 		TelegramId: uint64(chatId),
 		Name:       username,
 		Score: &pb.Score{

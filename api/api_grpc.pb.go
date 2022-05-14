@@ -29,6 +29,8 @@ type WhyWhereWhatServerClient interface {
 	GetTop(ctx context.Context, in *GetLeaderResponse, opts ...grpc.CallOption) (*Leader, error)
 	GetQuestions(ctx context.Context, in *Url, opts ...grpc.CallOption) (*List, error)
 	Exist(ctx context.Context, in *TelegramId, opts ...grpc.CallOption) (*ExistResponse, error)
+	UpdateUserScore(ctx context.Context, in *UserTelegram, opts ...grpc.CallOption) (*Empty, error)
+	GetPositionUser(ctx context.Context, in *TelegramId, opts ...grpc.CallOption) (*Position, error)
 }
 
 type whyWhereWhatServerClient struct {
@@ -102,6 +104,24 @@ func (c *whyWhereWhatServerClient) Exist(ctx context.Context, in *TelegramId, op
 	return out, nil
 }
 
+func (c *whyWhereWhatServerClient) UpdateUserScore(ctx context.Context, in *UserTelegram, opts ...grpc.CallOption) (*Empty, error) {
+	out := new(Empty)
+	err := c.cc.Invoke(ctx, "/api.WhyWhereWhatServer/UpdateUserScore", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *whyWhereWhatServerClient) GetPositionUser(ctx context.Context, in *TelegramId, opts ...grpc.CallOption) (*Position, error) {
+	out := new(Position)
+	err := c.cc.Invoke(ctx, "/api.WhyWhereWhatServer/GetPositionUser", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // WhyWhereWhatServerServer is the server API for WhyWhereWhatServer service.
 // All implementations must embed UnimplementedWhyWhereWhatServerServer
 // for forward compatibility
@@ -113,6 +133,8 @@ type WhyWhereWhatServerServer interface {
 	GetTop(context.Context, *GetLeaderResponse) (*Leader, error)
 	GetQuestions(context.Context, *Url) (*List, error)
 	Exist(context.Context, *TelegramId) (*ExistResponse, error)
+	UpdateUserScore(context.Context, *UserTelegram) (*Empty, error)
+	GetPositionUser(context.Context, *TelegramId) (*Position, error)
 	mustEmbedUnimplementedWhyWhereWhatServerServer()
 }
 
@@ -140,6 +162,12 @@ func (UnimplementedWhyWhereWhatServerServer) GetQuestions(context.Context, *Url)
 }
 func (UnimplementedWhyWhereWhatServerServer) Exist(context.Context, *TelegramId) (*ExistResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Exist not implemented")
+}
+func (UnimplementedWhyWhereWhatServerServer) UpdateUserScore(context.Context, *UserTelegram) (*Empty, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method UpdateUserScore not implemented")
+}
+func (UnimplementedWhyWhereWhatServerServer) GetPositionUser(context.Context, *TelegramId) (*Position, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetPositionUser not implemented")
 }
 func (UnimplementedWhyWhereWhatServerServer) mustEmbedUnimplementedWhyWhereWhatServerServer() {}
 
@@ -280,6 +308,42 @@ func _WhyWhereWhatServer_Exist_Handler(srv interface{}, ctx context.Context, dec
 	return interceptor(ctx, in, info, handler)
 }
 
+func _WhyWhereWhatServer_UpdateUserScore_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(UserTelegram)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(WhyWhereWhatServerServer).UpdateUserScore(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/api.WhyWhereWhatServer/UpdateUserScore",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(WhyWhereWhatServerServer).UpdateUserScore(ctx, req.(*UserTelegram))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _WhyWhereWhatServer_GetPositionUser_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(TelegramId)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(WhyWhereWhatServerServer).GetPositionUser(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/api.WhyWhereWhatServer/GetPositionUser",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(WhyWhereWhatServerServer).GetPositionUser(ctx, req.(*TelegramId))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // WhyWhereWhatServer_ServiceDesc is the grpc.ServiceDesc for WhyWhereWhatServer service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -314,6 +378,14 @@ var WhyWhereWhatServer_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "Exist",
 			Handler:    _WhyWhereWhatServer_Exist_Handler,
+		},
+		{
+			MethodName: "UpdateUserScore",
+			Handler:    _WhyWhereWhatServer_UpdateUserScore_Handler,
+		},
+		{
+			MethodName: "GetPositionUser",
+			Handler:    _WhyWhereWhatServer_GetPositionUser_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
