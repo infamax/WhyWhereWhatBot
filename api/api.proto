@@ -1,0 +1,102 @@
+syntax = "proto3";
+
+package api;
+
+option go_package = "/api";
+
+import "google/api/annotations.proto";
+
+service WhyWhereWhatServer {
+  rpc Update(User) returns (Empty) {
+    option (google.api.http) = {
+      post: "/UpdateUser"
+      body: "*"
+    };
+  } // Обновление данных о пользователе
+  rpc Add(User) returns (UserId) {
+    option (google.api.http) = {
+      post: "/Add"
+      body: "*"
+    };
+  } // Добавление пользователя в базу данных
+  rpc Delete(UserId) returns (Empty) {
+    option (google.api.http) = {
+      post: "/Delete"
+      body: "*"
+    };
+  }// Удаление пользователя из базы данных
+  rpc GetScoreUser(UserId) returns (Score) {
+    option (google.api.http) = {
+      get: "/GetScoreUser"
+    };
+  }// Получение количества заработанных очков пользователем
+  rpc GetTop(GetLeaderResponse) returns(Leader) {
+    option (google.api.http) = {
+      get: "/GetTop"
+    };
+  } // Получение лидеров в определенном режиме
+  rpc GetQuestions(Url) returns(List) {
+    option (google.api.http) = {
+      get: "/GetQuestions"
+    };
+  } // Получить по заданному количеству список вопросов c ответами на них
+  rpc Exist(TelegramId) returns(ExistResponse) {
+    option (google.api.http) = {
+      get: "/ExistUser"
+    };
+  } // Проверить существует ли пользователь с данным телеграмм id
+  rpc UpdateUserScore(UserTelegram) returns (Empty) {
+    option (google.api.http) = {
+      post: "/UpdateUserScore"
+    };
+  }
+}
+
+message User {
+  uint64 id = 1;
+  uint64 telegram_id = 2;
+  string name = 3;
+  Score score = 4;
+}
+
+message UserId {
+  uint64 id = 1;
+}
+
+message Empty {}
+
+message Score {
+  uint64 count = 1;
+}
+
+message GetLeaderResponse {
+  uint64 limit = 1;
+}
+
+message Leader {
+  repeated string name = 1;
+  repeated Score score = 2;
+}
+
+message Url {
+  string ref = 1;
+}
+
+message List {
+  repeated string questions = 1;
+  repeated string answers = 2;
+}
+
+message TelegramId {
+  uint64 Id = 1;
+}
+
+message ExistResponse {
+  bool ans = 1;
+}
+
+message UserTelegram {
+  uint64 telegram_id = 1;
+  uint64 new_score = 2;
+}
+
