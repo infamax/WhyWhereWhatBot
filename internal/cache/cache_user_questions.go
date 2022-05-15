@@ -29,6 +29,7 @@ func (u *UserQuestions) SetUserQuestions(id uint64, questions, answers []string)
 	u.numQuestions[id] = 0
 	u.questions[id] = questions
 	u.answers[id] = answers
+	u.correctAnsCount[id] = 0
 }
 
 func (u *UserQuestions) GetUserQuestion(id uint64, num int) string {
@@ -82,7 +83,7 @@ func (u *UserQuestions) IncUserCorrectAns(id uint64) {
 }
 
 func (u *UserQuestions) GetCorrectAnsUser(id uint64) int {
-	defer u.mu.Unlock()
-	u.mu.Lock()
+	defer u.mu.RUnlock()
+	u.mu.RLock()
 	return u.correctAnsCount[id]
 }

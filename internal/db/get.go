@@ -11,7 +11,7 @@ import (
 
 func (d *Db) Get(ctx context.Context, id uint64) (*models.User, error) {
 	var user models.User
-	err := d.db.First(&user, int(id)).Error
+	err := d.db.Where("telegram_id = ?", id).First(&user).Error
 	if errors.Is(err, gorm.ErrRecordNotFound) {
 		return nil, status.Error(codes.NotFound, "not found")
 	}

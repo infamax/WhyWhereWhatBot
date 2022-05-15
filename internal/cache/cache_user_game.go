@@ -32,3 +32,15 @@ func (c *UserGame) IsUserPlayGame(id uint64) bool {
 	c.mu.RLock()
 	return c.c[id]
 }
+
+func (c *UserGame) GetUsersInGame() []uint64 {
+	defer c.mu.RUnlock()
+	c.mu.RLock()
+	res := make([]uint64, 0)
+	for key, value := range c.c {
+		if value {
+			res = append(res, key)
+		}
+	}
+	return res
+}

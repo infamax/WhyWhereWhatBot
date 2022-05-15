@@ -1,30 +1,28 @@
 package telegram
 
 import (
+	"context"
 	tgbotapi "github.com/go-telegram-bot-api/telegram-bot-api/v5"
+	pb "github.com/infamax/WhyWhereWhatBot/api"
 	"log"
 	"strconv"
-)
-
-const (
-	commandStart = "start"
-	commandHelp  = "help"
-	commandTop   = "top"
-	commandRules = "rules"
-	commandMyPos = "mypos"
-	commandGame  = "game"
 )
 
 func (b *Bot) handleUpdates(updates tgbotapi.UpdatesChannel) {
 	for update := range updates {
 		if update.Message == nil {
+			for _, userId := range b.cacheGame.GetUsersInGame() {
+				if b.cacheTime.IsUserTimeCompleted(userId) {
+					b.cacheQuestions.IncUserAskedQuestions(uint64(update.Message.Chat.ID))
+					b.playGame(update.Message, b.cacheQuestions.GetCountAskedQuestions(uint64(update.Message.Chat.ID)), true)
+				}
+			}
 			continue
 		}
 		if update.Message.IsCommand() {
 			b.handleCommand(update.Message)
-			continue
 		} else if b.cacheGame.IsUserPlayGame(uint64(update.Message.Chat.ID)) {
-			b.checkAnswer(update.Message, b.cacheQuestions.GetCountAskedQuestions(uint64(update.Message.Chat.ID)))
+			go b.checkAnswer(update.Message, b.cacheQuestions.GetCountAskedQuestions(uint64(update.Message.Chat.ID)))
 		} else {
 			msg := tgbotapi.NewMessage(update.Message.Chat.ID,
 				"Введите комманду, чтобы начать игру! Узнать список моих комманд /help")
@@ -63,7 +61,8 @@ func (b *Bot) handleCommand(message *tgbotapi.Message) error {
 			b.bot.Send(msg)
 			return err
 		}
-		return b.playGame(message, 0)
+		go b.playGame(message, 0, false)
+		return err
 	default:
 		msg.Text = "Ты ввел неизвестную комманду"
 		_, err := b.bot.Send(msg)
@@ -79,7 +78,6 @@ func (b *Bot) handleStartCommand(message *tgbotapi.Message, greeting string) err
 }
 
 func (b *Bot) handleTopCommand(message *tgbotapi.Message, limit int) error {
-	// TODO нехватка игровок обеспечить проверку
 	users, err := b.getTop(limit)
 	text := "Список лидеров\n"
 	for i, user := range users.Name {
@@ -100,6 +98,18 @@ func (b *Bot) handleMessage(message *tgbotapi.Message) {
 	log.Printf("[%s] %s", message.From.UserName, message.Text)
 
 	msg := tgbotapi.NewMessage(message.Chat.ID, message.Text)
-	//msg.ReplyToMessageID = message.MessageID
 	b.bot.Send(msg)
+}
+
+func (b *Bot) handlePosCommand(message *tgbotapi.Message) error {
+	pos, err := b.client.GetPositionUser(context.TODO(), &pb.TelegramId{
+		Id: uint64(message.Chat.ID),
+	})
+	if err != nil {
+		return err
+	}
+	text := "Твоя позиция в рейтинге " + strconv.Itoa(int(pos.Pos))
+	msg := tgbotapi.NewMessage(message.Chat.ID, text)
+	b.bot.Send(msg)
+	return nil
 }

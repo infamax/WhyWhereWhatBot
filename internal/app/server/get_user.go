@@ -5,7 +5,7 @@ import (
 	pb "github.com/infamax/WhyWhereWhatBot/api"
 )
 
-func (m MainServer) GetScoreUser(ctx context.Context, req *pb.UserId) (*pb.Score, error) {
+func (m MainServer) GetScoreUser(ctx context.Context, req *pb.TelegramId) (*pb.Score, error) {
 	user, err := m.storage.Get(ctx, req.Id)
 	if user == nil {
 		return nil, err
