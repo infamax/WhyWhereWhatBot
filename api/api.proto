@@ -25,7 +25,7 @@ service WhyWhereWhatServer {
       body: "*"
     };
   }// Удаление пользователя из базы данных
-  rpc GetScoreUser(UserId) returns (Score) {
+  rpc GetScoreUser(TelegramId) returns (Score) {
     option (google.api.http) = {
       get: "/GetScoreUser"
     };

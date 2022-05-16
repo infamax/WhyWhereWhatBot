@@ -25,7 +25,7 @@ type WhyWhereWhatServerClient interface {
 	Update(ctx context.Context, in *User, opts ...grpc.CallOption) (*Empty, error)
 	Add(ctx context.Context, in *User, opts ...grpc.CallOption) (*UserId, error)
 	Delete(ctx context.Context, in *UserId, opts ...grpc.CallOption) (*Empty, error)
-	GetScoreUser(ctx context.Context, in *UserId, opts ...grpc.CallOption) (*Score, error)
+	GetScoreUser(ctx context.Context, in *TelegramId, opts ...grpc.CallOption) (*Score, error)
 	GetTop(ctx context.Context, in *GetLeaderResponse, opts ...grpc.CallOption) (*Leader, error)
 	GetQuestions(ctx context.Context, in *Url, opts ...grpc.CallOption) (*List, error)
 	Exist(ctx context.Context, in *TelegramId, opts ...grpc.CallOption) (*ExistResponse, error)
@@ -68,7 +68,7 @@ func (c *whyWhereWhatServerClient) Delete(ctx context.Context, in *UserId, opts 
 	return out, nil
 }
 
-func (c *whyWhereWhatServerClient) GetScoreUser(ctx context.Context, in *UserId, opts ...grpc.CallOption) (*Score, error) {
+func (c *whyWhereWhatServerClient) GetScoreUser(ctx context.Context, in *TelegramId, opts ...grpc.CallOption) (*Score, error) {
 	out := new(Score)
 	err := c.cc.Invoke(ctx, "/api.WhyWhereWhatServer/GetScoreUser", in, out, opts...)
 	if err != nil {
@@ -129,7 +129,7 @@ type WhyWhereWhatServerServer interface {
 	Update(context.Context, *User) (*Empty, error)
 	Add(context.Context, *User) (*UserId, error)
 	Delete(context.Context, *UserId) (*Empty, error)
-	GetScoreUser(context.Context, *UserId) (*Score, error)
+	GetScoreUser(context.Context, *TelegramId) (*Score, error)
 	GetTop(context.Context, *GetLeaderResponse) (*Leader, error)
 	GetQuestions(context.Context, *Url) (*List, error)
 	Exist(context.Context, *TelegramId) (*ExistResponse, error)
@@ -151,7 +151,7 @@ func (UnimplementedWhyWhereWhatServerServer) Add(context.Context, *User) (*UserI
 func (UnimplementedWhyWhereWhatServerServer) Delete(context.Context, *UserId) (*Empty, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Delete not implemented")
 }
-func (UnimplementedWhyWhereWhatServerServer) GetScoreUser(context.Context, *UserId) (*Score, error) {
+func (UnimplementedWhyWhereWhatServerServer) GetScoreUser(context.Context, *TelegramId) (*Score, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetScoreUser not implemented")
 }
 func (UnimplementedWhyWhereWhatServerServer) GetTop(context.Context, *GetLeaderResponse) (*Leader, error) {
@@ -237,7 +237,7 @@ func _WhyWhereWhatServer_Delete_Handler(srv interface{}, ctx context.Context, de
 }
 
 func _WhyWhereWhatServer_GetScoreUser_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(UserId)
+	in := new(TelegramId)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -249,7 +249,7 @@ func _WhyWhereWhatServer_GetScoreUser_Handler(srv interface{}, ctx context.Conte
 		FullMethod: "/api.WhyWhereWhatServer/GetScoreUser",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(WhyWhereWhatServerServer).GetScoreUser(ctx, req.(*UserId))
+		return srv.(WhyWhereWhatServerServer).GetScoreUser(ctx, req.(*TelegramId))
 	}
 	return interceptor(ctx, in, info, handler)
 }

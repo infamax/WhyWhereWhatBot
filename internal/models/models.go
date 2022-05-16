@@ -1,7 +1,5 @@
 package models
 
-import "gorm.io/gorm"
-
 const (
 	Easy = iota
 	Medium
@@ -9,7 +7,7 @@ const (
 )
 
 type User struct {
-	gorm.Model
+	ID         uint `gorm:"primarykey"`
 	TelegramId uint64
 	Name       string
 	Count      uint64

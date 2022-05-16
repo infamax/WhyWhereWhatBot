@@ -33,8 +33,6 @@ func main() {
 		log.Fatal(err)
 	}
 
-	// Запуск сервера
-	log.Println("Connecting server")
 	newServer := server.New(adp)
 	//lis, err := net.Listen("tcp", "localhost:8080")
 	if err != nil {

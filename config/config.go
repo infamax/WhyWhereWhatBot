@@ -2,7 +2,6 @@ package config
 
 import (
 	"gopkg.in/yaml.v2"
-	"log"
 )
 
 // Временная структура для удобного парсинга yaml
@@ -28,7 +27,6 @@ func ParseConfig(fileBytes []byte) (*Config, error) {
 
 	c := Config{}
 
-	log.Println("Parse api key = ", cf.APIKeys.Telegram)
 	c.ApiKey.Telegram = cf.APIKeys.Telegram
 	c.ApiKey.Site = cf.APIKeys.Site
 	c.Moderators = make(map[UserId]string)

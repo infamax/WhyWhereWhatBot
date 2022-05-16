@@ -138,7 +138,7 @@ var (
 )
 
 func request_WhyWhereWhatServer_GetScoreUser_0(ctx context.Context, marshaler runtime.Marshaler, client WhyWhereWhatServerClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq UserId
+	var protoReq TelegramId
 	var metadata runtime.ServerMetadata
 
 	if err := req.ParseForm(); err != nil {
@@ -154,7 +154,7 @@ func request_WhyWhereWhatServer_GetScoreUser_0(ctx context.Context, marshaler ru
 }
 
 func local_request_WhyWhereWhatServer_GetScoreUser_0(ctx context.Context, marshaler runtime.Marshaler, server WhyWhereWhatServerServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq UserId
+	var protoReq TelegramId
 	var metadata runtime.ServerMetadata
 
 	if err := req.ParseForm(); err != nil {

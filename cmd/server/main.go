@@ -24,9 +24,7 @@ func main() {
 		log.Fatal(err)
 	}
 
-	log.Println("Connecting database")
 	adp, err := db.New(cfg.Dsn)
-	log.Println("Successfully connecting database")
 	if err != nil {
 		log.Fatal(err)
 	}
