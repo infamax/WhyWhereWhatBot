@@ -29,7 +29,7 @@ func TestGetScore(t *testing.T) {
 		Id: 3113223,
 	})
 	assert.Nil(t, err)
-	assert.Equal(t, int(10), int(res.Count))
+	assert.Equal(t, 10, int(res.Count))
 }
 
 func GetScoreUserWhereNotExist(t *testing.T) {
