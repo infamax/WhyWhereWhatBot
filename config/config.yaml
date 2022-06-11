@@ -2,11 +2,8 @@ apiKeys:
   telegram: "5300175375:AAH4DDY0TYif6XNas5lvd6aHDDnDb6Mv3iE"
   site: "https://db.chgk.info/xml/random/limit/"
 
-dsn: "host=localhost port=5432 user=postgres password=23041978 dbname=homework_2 sslmode=disable"
+dsn: "host=localhost port=5432 user=postgres password=postgres dbname=postgres sslmode=disable"
 
 moderators:
   - name: Maxim Partin
     telegram: '@max_info05'
-
-  - name: Oxana Dolina
-    telegram: '@DolinaO'

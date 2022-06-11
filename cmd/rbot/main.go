@@ -15,7 +15,7 @@ import (
 
 func main() {
 	// Чтение конфига
-	b, err := os.ReadFile("./config/config.yaml")
+	b, err := os.ReadFile("/usr/src/app/config/config.yaml")
 
 	if err != nil {
 		log.Fatal(err)

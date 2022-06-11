@@ -1,0 +1,13 @@
+FROM golang:1.18
+
+RUN mkdir /usr/src/app/
+
+ADD . /usr/src/app/
+
+WORKDIR /usr/src/app/cmd/rbot/
+
+RUN go build -o main .
+
+CMD ["/usr/src/app/cmd/rbot/main"]
+
+
