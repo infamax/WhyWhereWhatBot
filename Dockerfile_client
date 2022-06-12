@@ -1,13 +1,13 @@
 FROM golang:1.18
 
-RUN mkdir /usr/src/app/
+WORKDIR /app
 
-ADD . /usr/src/app/
+COPY . /app
 
-WORKDIR /usr/src/app/cmd/rbot/
+RUN go get -d -v ./...
 
-RUN go build -o main .
+RUN go install -v ./...
 
-CMD ["/usr/src/app/cmd/rbot/main"]
+RUN go build cmd/rbot/main.go
 
-
+CMD ["/app/main"]
